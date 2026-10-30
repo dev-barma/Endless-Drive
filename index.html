@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no"><title>Endless Drive</title>
 <style>
 :root{--fg:#eaf0ff;--ac:#ffb347;--pn:rgba(12,16,26,.88);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -690,7 +691,7 @@ const pTail=new THREE.MeshBasicMaterial({color:0x991010}),pc=new THREE.Group();l
 // ===== First-person cockpit (rendered in a second pass so it never clips into the world) =====
 const cockScene=new THREE.Scene(),cockCam=new THREE.PerspectiveCamera(70,1,.03,30),cockAmb=new THREE.AmbientLight(0xffffff,.8),cockDir=new THREE.DirectionalLight(0xffffff,.6),cockG=new THREE.Group();
 cockDir.position.set(.3,1,.5);cockScene.add(cockAmb,cockDir,cockG);
-const EYE={car:new THREE.Vector3(.36,1.18,.05),bike:new THREE.Vector3(0,1.42,.12)};
+const EYE={car:new THREE.Vector3(.36,1.2,.38),bike:new THREE.Vector3(0,1.44,.34)};
 let cockScr=null,clL=-1,clG=0,clR=0,clM='',clU='',cockWheel=null,cockBar=null,clCv=null,clCx=null,clTex=null,clT=0,cockOn=false;
 function drawCluster(){if(!clCx)return;const c=clCx,W=256,H=100,val=HV.v,car=S.cveh!=='bike',g=HV.g<0?'R':(HV.g||'N'),r=clamp(HV.r/8000,0,1);
  c.fillStyle='#05080d';c.fillRect(0,0,W,H);
@@ -702,7 +703,7 @@ function drawCluster(){if(!clCx)return;const c=clCx,W=256,H=100,val=HV.v,car=S.c
 function buildCock(){
  cockG.children.slice().forEach(c=>cockG.remove(c));cockWheel=cockBar=null;cockScr=null;
  const bike=S.cveh==='bike',st=STY[S.cstyle]||STY.sedan,w=st[0],sx=st[1]/4.4,sy=st[2]/.8,Y=y=>.35+(y-.35)*sy,E=bike?EYE.bike:EYE.car;
- if(!bike){E.set(w*.2,Y(1.18),.05*sx)}
+ if(!bike){E.set(w*.2,Y(1.2),.38*sx)}
  cockG.position.set(-E.x,-E.y,-E.z);
  const dk1=new THREE.MeshLambertMaterial({color:0x15171b}),dk2=new THREE.MeshLambertMaterial({color:0x262a31}),bodyM=new THREE.MeshPhongMaterial({color:new THREE.Color(S.ccolor),shininess:80,specular:0x555555}),glM=new THREE.MeshBasicMaterial({color:0x6b7a8c}),
  B=(a,b,c,m,x,y,z,rx)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(a,b,c),m);o.position.set(x,y,z);if(rx)o.rotation.x=rx;cockG.add(o);return o},
@@ -714,7 +715,7 @@ function buildCock(){
   B(w*.88,.1,.42*sx,dk1,0,Y(.88),-.52*sx);B(w*.88,.34,.1,dk1,0,Y(.76),-.72*sx);B(w*.88,.3,.1,dk1,0,Y(.78),-.3*sx);// dashboard
   B(.5,.2,.16*sx,dk2,ex,Y(.95),-.44*sx);                                  // instrument binnacle
   const cl=new THREE.Mesh(new THREE.PlaneGeometry(.4,.15),clM);cl.position.set(ex,Y(.945),-.355*sx);cl.rotation.x=-.2;cockG.add(cl);
-  B(.7,.43,.05,dk2,-w*.12,Y(1.09),-.57*sx,-.3);cockScr=new THREE.Mesh(new THREE.PlaneGeometry(.64,.36),new THREE.MeshBasicMaterial({color:0x0b1d2e}));cockScr.position.set(-w*.12,Y(1.09),-.54*sx);cockScr.rotation.x=-.3;cockG.add(cockScr);// centre screen
+  B(.84,.5,.05,dk2,-w*.145,Y(1.12),-.57*sx,-.3);cockScr=new THREE.Mesh(new THREE.PlaneGeometry(.76,.4275),new THREE.MeshBasicMaterial({color:0x0b1d2e}));cockScr.position.set(-w*.145,Y(1.12),-.54*sx);cockScr.rotation.x=-.3;cockG.add(cockScr);// centre screen
   const wg=new THREE.Group();wg.position.set(ex,Y(.86),-.2*sx);wg.rotation.x=-.45;const sw=new THREE.Group();wg.add(sw);
   sw.add(new THREE.Mesh(new THREE.TorusGeometry(.17,.022,10,30),dk1));const hub=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.04,14).rotateX(Math.PI/2),dk2);sw.add(hub);
   [0,2.1,4.2].forEach(a=>{const sp=new THREE.Mesh(new THREE.BoxGeometry(.15,.025,.02),dk1);sp.position.set(Math.cos(a)*.09,Math.sin(a)*.09,0);sp.rotation.z=a;sw.add(sp)});
@@ -771,7 +772,7 @@ function cockRender(){
  if(cockWheel)cockWheel.rotation.z=-sv*3;if(cockBar)cockBar.rotation.y=-sv*.5;
  if(HV.v!==clL||HV.g!==clG||Math.abs(HV.r-clR)>60||S.trans!==clM||S.units!==clU){clL=HV.v;clG=HV.g;clR=HV.r;clM=S.trans;clU=S.units;drawCluster()}
  cockCam.fov=cam.fov;cockCam.aspect=cam.aspect;cockCam.updateProjectionMatrix();
- if(window.edMedia){let r=null;if(cockScr){cockCam.updateMatrixWorld(true);cockG.updateMatrixWorld(true);let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9,ok=true;[[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([a,b])=>{_v3.set(a*.32,b*.18,0).applyMatrix4(cockScr.matrixWorld).project(cockCam);if(!isFinite(_v3.x))ok=false;const px2=(_v3.x*.5+.5)*innerWidth,py2=(-_v3.y*.5+.5)*innerHeight;x0=Math.min(x0,px2);x1=Math.max(x1,px2);y0=Math.min(y0,py2);y1=Math.max(y1,py2)});if(ok&&x1-x0>20)r={x:x0,y:y0,w:x1-x0,h:y1-y0}}try{window.edMedia.place(r)}catch(e){}}
+ if(window.edMedia){let r=null;if(cockScr){cockCam.updateMatrixWorld(true);cockG.updateMatrixWorld(true);let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9,ok=true;[[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([a,b])=>{_v3.set(a*.38,b*.21375,0).applyMatrix4(cockScr.matrixWorld).project(cockCam);if(!isFinite(_v3.x))ok=false;const px2=(_v3.x*.5+.5)*innerWidth,py2=(-_v3.y*.5+.5)*innerHeight;x0=Math.min(x0,px2);x1=Math.max(x1,px2);y0=Math.min(y0,py2);y1=Math.max(y1,py2)});if(ok&&x1-x0>20)r={x:x0,y:y0,w:x1-x0,h:y1-y0}}try{window.edMedia.place(r)}catch(e){}}
  R.autoClear=false;R.clearDepth();R.render(cockScene,cockCam);R.autoClear=true}
 
 function buildPlayer(){clearCrash();if(body)pc.remove(body);const bike=S.cveh==='bike',st=STY[S.cstyle]||STY.sedan;body=bike?mkBike(new THREE.Color(S.ccolor),{jacket:S.cjacket,helmet:S.chelmet,pants:S.cpants},pTail):mkCar(st[0],st[1],st[2],new THREE.Color(S.ccolor),1,pTail,{fin:S.cfin,wheel:S.cwheel,tint:S.ctint});body.userData.k=1;pc.add(body);cockDirty=true;PW=bike?.9:st[0];PL=bike?2.6:st[1];
@@ -941,7 +942,7 @@ else{const a=Math.sin(t*.22)*10,b=Math.cos(t*.22)*13-2;tp.set(px+rx*a+fx*b,2.2+1
 if(mode!==0)lk.set(px+fx*12,1.2,pz+fz*12);if(mode===3)lk.set(px,1,pz);
 if(gar){const a=clk*.5;tp.set(px+Math.sin(a)*7.5,2.4,pz+Math.cos(a)*7.5);lk.set(px,.9,pz)}tp.x+=rx*camOff;tp.z+=rz*camOff;lk.x+=rx*camOff*.6;lk.z+=rz*camOff*.6;tp.y+=ey;lk.y+=ey;cam.position.copy(tp);cL.copy(lk);snap=false;
 shake=Math.max(0,shake-dt*2);if(shake>0)cam.position.add(tp.set((Math.random()-.5)*shake*.5,(Math.random()-.5)*shake*.4,(Math.random()-.5)*shake*.5));
-cam.lookAt(cL);if(mode===0&&!gar)cam.rotateZ(pc.rotation.z*.9);const f=S.fov+(mode===0?0:Math.abs(v)*.12)+clamp((Math.abs(v)*3.6-150)/150,0,1)*14+boostF*8;if(Math.abs(cam.fov-f)>.05){cam.fov=lerp(cam.fov,f,Math.min(1,dt*4));cam.updateProjectionMatrix()}}
+cam.lookAt(cL);if(mode===0&&!gar)cam.rotateZ(pc.rotation.z*.9);const f=S.fov+(mode===0?8:Math.abs(v)*.12)+clamp((Math.abs(v)*3.6-150)/150,0,1)*14+boostF*8;if(Math.abs(cam.fov-f)>.05){cam.fov=lerp(cam.fov,f,Math.min(1,dt*4));cam.updateProjectionMatrix()}}
 function rainUpd(dt,ra){const cnt=Math.floor(Q[S.q].rain*clamp(ra,0,1));rain.visible=cnt>10&&tunF<.5;if(!rain.visible)return;rain.material.opacity=clamp(ra*.5,0,.65);
 const fs=S.map==='snow'?7:38,sk=S.map==='snow'?.12:.8;rain.material.color.setHex(S.map==='snow'?0xffffff:0xaec6e0);const cx_=cam.position.x,cy=cam.position.y,cz=cam.position.z,wm=(a,c,m)=>c+(((a-c)%m)+m*1.5)%m-m/2;
 for(let i=0;i<cnt;i++){const j=i*3;rd[j+1]-=fs*dt;rd[j]=wm(rd[j],cx_,40);rd[j+2]=wm(rd[j+2],cz,40);rd[j+1]=cy-6+(((rd[j+1]-(cy-6))%26)+26)%26;
@@ -1060,7 +1061,7 @@ try{const w=document.createElement('div');w.id='mpw';w.innerHTML='<div class="mh
  function plain(id,u){const box=$('mpv');box.innerHTML='';const f=document.createElement('iframe');f.src='https://www.youtube.com/embed/'+(id.v||'videoseries')+'?autoplay=1&playsinline=1&rel=0&enablejsapi=1'+(id.l?'&list='+id.l:'')+'&origin='+encodeURIComponent(location.origin);f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.referrerPolicy='strict-origin-when-cross-origin';f.setAttribute('allowfullscreen','');box.appendChild(f)}
  function mk(id,u){const box=$('mpv');box.innerHTML='<div id="mpyt"></div>';try{ytP=new YT.Player('mpyt',{width:'100%',height:'100%',videoId:id.v||undefined,playerVars:{autoplay:1,playsinline:1,rel:0,...(id.l?(id.v?{list:id.l}:{listType:'playlist',list:id.l}):{})},events:{onReady:e=>{try{e.target.setVolume(MS.vol);MS.mute?e.target.mute():e.target.unMute();e.target.playVideo()}catch(x){}},onError:e=>{const c=e.data;ctl=true;refresh();msg((c===101||c===150?'The owner of this video does not allow playing it inside other apps (code '+c+').':c===153||c===152?'YouTube refused to play here (code '+c+'). Open the game from its https link (for example GitHub Pages) or use the Android app.':c===100?'This video is private or removed.':'Could not play this video (code '+c+').')+openY(u))}}})}catch(x){plain(id,u)}}
  function play(){const raw=$('mpi').value.trim(),id=parse(raw);if(!id){msg('That does not look like a YouTube link. Try a youtube.com or youtu.be video or playlist link.');return}
-  MS.u=raw;sv();if(document.activeElement)document.activeElement.blur();on=true;refresh();if(!/^https?:/.test(location.protocol)||location.origin==='null'){msg('Videos cannot play when the game is opened from a file. Open it from its https link or the Android app.'+openY(raw));return}
+  MS.u=raw;sv();if(document.activeElement)document.activeElement.blur();const bad=!/^https?:/.test(location.protocol)||location.origin==='null';on=true;ctl=bad;refresh();if(MS.d==='in'&&!rectNow&&!bad){try{popup('Video shows on the dashboard in Driver view (press C)')}catch(e){}}if(bad){msg('Videos cannot play when the game is opened from a file. Open it from its https link or the Android app.'+openY(raw));return}
   if(window.YT&&YT.Player){mk(id,raw);return}msg('Loading player...');clearTimeout(ytTimer);if(!ytLoad){ytLoad=1;const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=()=>{ytLoad=0;plain(id,raw)};document.head.appendChild(sc);window.onYouTubeIframeAPIReady=()=>{clearTimeout(ytTimer);mk(parse($('mpi').value.trim())||id,raw)}}
   ytTimer=setTimeout(()=>{if(!(window.YT&&YT.Player))plain(id,raw)},6000)}
  $('mpi').value=MS.u;$('mpd').value=MS.d;$('mps').value=MS.s;drawKnob();
@@ -1075,3 +1076,5 @@ try{const w=document.createElement('div');w.id='mpw';w.innerHTML='<div class="mh
 }catch(e){console.error('media',e)}
 })();
 </script></body></html>
+
+</body></html>
