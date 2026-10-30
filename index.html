@@ -717,7 +717,7 @@ const pTail=new THREE.MeshBasicMaterial({color:0x991010}),pc=new THREE.Group();l
 // ===== First-person cockpit (rendered in a second pass so it never clips into the world) =====
 const cockScene=new THREE.Scene(),cockCam=new THREE.PerspectiveCamera(70,1,.03,30),cockAmb=new THREE.AmbientLight(0xffffff,.8),cockDir=new THREE.DirectionalLight(0xffffff,.6),cockG=new THREE.Group();
 cockDir.position.set(.3,1,.5);cockScene.add(cockAmb,cockDir,cockG);
-const EYE={car:new THREE.Vector3(.36,1.2,.38),bike:new THREE.Vector3(0,1.44,.34)};
+const EYE={car:new THREE.Vector3(.36,1.26,.38),bike:new THREE.Vector3(0,1.5,.34)};
 let cockScr=null,clL=-1,clG=0,clR=0,clM='',clU='',cockWheel=null,cockBar=null,clCv=null,clCx=null,clTex=null,clT=0,cockOn=false;
 function drawCluster(){if(!clCx)return;const c=clCx,W=256,H=100,val=HV.v,car=S.cveh!=='bike',g=HV.g<0?'R':(HV.g||'N'),r=clamp(HV.r/8000,0,1);
  c.fillStyle='#05080d';c.fillRect(0,0,W,H);
@@ -729,7 +729,7 @@ function drawCluster(){if(!clCx)return;const c=clCx,W=256,H=100,val=HV.v,car=S.c
 function buildCock(){
  cockG.children.slice().forEach(c=>cockG.remove(c));cockWheel=cockBar=null;cockScr=null;
  const bike=S.cveh==='bike',st=STY[S.cstyle]||STY.sedan,w=st[0],sx=st[1]/4.4,sy=st[2]/.8,Y=y=>.35+(y-.35)*sy,E=bike?EYE.bike:EYE.car;
- if(!bike){E.set(w*.2,Y(1.2),.38*sx)}
+ if(!bike){E.set(w*.2,Y(1.26),.38*sx)}
  cockG.position.set(-E.x,-E.y,-E.z);
  const dk1=new THREE.MeshLambertMaterial({color:0x15171b}),dk2=new THREE.MeshLambertMaterial({color:0x262a31}),bodyM=new THREE.MeshPhongMaterial({color:new THREE.Color(S.ccolor),shininess:80,specular:0x555555}),glM=new THREE.MeshBasicMaterial({color:0x6b7a8c}),
  B=(a,b,c,m,x,y,z,rx)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(a,b,c),m);o.position.set(x,y,z);if(rx)o.rotation.x=rx;cockG.add(o);return o},
@@ -737,12 +737,12 @@ function buildCock(){
  clCv=document.createElement('canvas');clCv.width=256;clCv.height=100;clCx=clCv.getContext('2d');clTex=new THREE.CanvasTexture(clCv);const clM=new THREE.MeshBasicMaterial({map:clTex});
  if(!bike){
   const ex=w*.2,V3=(x,y,z)=>new THREE.Vector3(x,y,z);
-  B(w*.9,.05,1.4*sx,bodyM,0,Y(.955),-1.4*sx,-.05);                       // bonnet
-  B(w*.88,.1,.42*sx,dk1,0,Y(.88),-.52*sx);B(w*.88,.34,.1,dk1,0,Y(.76),-.72*sx);B(w*.88,.3,.1,dk1,0,Y(.78),-.3*sx);// dashboard
-  B(.5,.2,.16*sx,dk2,ex,Y(.95),-.44*sx);                                  // instrument binnacle
-  const cl=new THREE.Mesh(new THREE.PlaneGeometry(.4,.15),clM);cl.position.set(ex,Y(.945),-.355*sx);cl.rotation.x=-.2;cockG.add(cl);
+  B(w*.9,.05,.85*sx,bodyM,0,Y(.89),-1.12*sx,-.08);                       // bonnet
+  B(w*.88,.1,.42*sx,dk1,0,Y(.84),-.52*sx);B(w*.88,.34,.1,dk1,0,Y(.72),-.72*sx);B(w*.88,.3,.1,dk1,0,Y(.74),-.3*sx);// dashboard
+  B(.5,.18,.16*sx,dk2,ex,Y(.92),-.44*sx);                                  // instrument binnacle
+  const cl=new THREE.Mesh(new THREE.PlaneGeometry(.4,.15),clM);cl.position.set(ex,Y(.915),-.355*sx);cl.rotation.x=-.2;cockG.add(cl);
   
-  const wg=new THREE.Group();wg.position.set(ex,Y(.86),-.2*sx);wg.rotation.x=-.45;const sw=new THREE.Group();wg.add(sw);
+  const wg=new THREE.Group();wg.position.set(ex,Y(.82),-.2*sx);wg.rotation.x=-.45;const sw=new THREE.Group();wg.add(sw);
   sw.add(new THREE.Mesh(new THREE.TorusGeometry(.17,.022,10,30),dk1));const hub=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.04,14).rotateX(Math.PI/2),dk2);sw.add(hub);
   [0,2.1,4.2].forEach(a=>{const sp=new THREE.Mesh(new THREE.BoxGeometry(.15,.025,.02),dk1);sp.position.set(Math.cos(a)*.09,Math.sin(a)*.09,0);sp.rotation.z=a;sw.add(sp)});
   const skin=new THREE.MeshLambertMaterial({color:0xd9a77f}),slv=new THREE.MeshLambertMaterial({color:new THREE.Color(S.cjacket)});[-1,1].forEach(s2=>{const hn=new THREE.Mesh(new THREE.SphereGeometry(.04,10,8),skin);hn.scale.set(1.1,1,.8);hn.position.set(s2*.165,.025,.01);sw.add(hn);const am=new THREE.Mesh(new THREE.CylinderGeometry(.035,.03,.3,8),slv);am.position.set(s2*.19,-.1,.2);am.rotation.set(-1.05,0,s2*.18);wg.add(am);am.userData.arm=s2;});cockG.add(wg);cockWheel=sw;
@@ -963,12 +963,12 @@ function spawn(c){resetNpc(c);const heavy=c.t>1&&c.t<4;for(let a=0;a<6;a++){cons
 function camUpd(dt,P){const ey=elev(d);
 const s=dcx(d)+forkS,n=Math.hypot(1,s),fx=s/n,fz=-1/n,rx=1/n,rz=s/n,px=P[0],pz=P[1],t=clk;
 pc.position.set(px,ey,pz);GRD.position.set(px,-.12,pz);M.grass.map.offset.set(((px/12)%1+1)%1,((-pz/12)%1+1)%1);pc.rotation.y=P[2]-Math.atan(forkS)-Math.atan2(lvv,Math.abs(v)+4)*1.15;pc.rotation.z=(S.cveh==='bike'?-sv*.28:0)-(rrOn&&body.userData.rig?body.userData.rig.lean*.3:0);pc.rotation.x=Math.atan((elev(d+4)-elev(d-4))/8);pc.rotation.y+=pcr.yaw;pc.rotation.z+=pcr.roll;pc.position.y+=pcr.y+pcr.lift;pc.children.forEach(c=>{if(c!==hl&&c!==tg&&c!==beam&&!c.userData.k)c.visible=mode!==0||gar});body.children.forEach(c=>c.visible=mode!==0||gar||!!c.userData.k);
-if(mode===0){pc.updateMatrixWorld(true);const E=S.cveh==='bike'?EYE.bike:EYE.car;tp.copy(E);pc.localToWorld(tp);lk.set(E.x,E.y-.03,-30);pc.localToWorld(lk);tp.y-=ey;lk.y-=ey}else if(mode===1)tp.set(px-fx*7,3,pz-fz*7);else if(mode===2)tp.set(px-fx*17,7.5,pz-fz*17);
+if(mode===0){pc.updateMatrixWorld(true);const E=S.cveh==='bike'?EYE.bike:EYE.car;tp.copy(E);pc.localToWorld(tp);lk.set(E.x,E.y-2.8,-30);pc.localToWorld(lk);tp.y-=ey;lk.y-=ey}else if(mode===1)tp.set(px-fx*7,3,pz-fz*7);else if(mode===2)tp.set(px-fx*17,7.5,pz-fz*17);
 else{const a=Math.sin(t*.22)*10,b=Math.cos(t*.22)*13-2;tp.set(px+rx*a+fx*b,2.2+1.6*Math.sin(t*.13),pz+rz*a+fz*b)}
 if(mode!==0)lk.set(px+fx*12,1.2,pz+fz*12);if(mode===3)lk.set(px,1,pz);
 if(gar){const a=clk*.5;tp.set(px+Math.sin(a)*7.5,2.4,pz+Math.cos(a)*7.5);lk.set(px,.9,pz)}tp.x+=rx*camOff;tp.z+=rz*camOff;lk.x+=rx*camOff*.6;lk.z+=rz*camOff*.6;tp.y+=ey;lk.y+=ey;cam.position.copy(tp);cL.copy(lk);snap=false;
 shake=Math.max(0,shake-dt*2);if(shake>0)cam.position.add(tp.set((Math.random()-.5)*shake*.5,(Math.random()-.5)*shake*.4,(Math.random()-.5)*shake*.5));
-cam.lookAt(cL);if(mode===0&&!gar)cam.rotateZ(pc.rotation.z*.9);const f=S.fov+(mode===0?8:Math.abs(v)*.12)+clamp((Math.abs(v)*3.6-150)/150,0,1)*14+boostF*8;if(Math.abs(cam.fov-f)>.05){cam.fov=lerp(cam.fov,f,Math.min(1,dt*4));cam.updateProjectionMatrix()}}
+cam.lookAt(cL);if(mode===0&&!gar)cam.rotateZ(pc.rotation.z*.9);const f=S.fov+(mode===0?3:Math.abs(v)*.12)+clamp((Math.abs(v)*3.6-150)/150,0,1)*14+boostF*8;if(Math.abs(cam.fov-f)>.05){cam.fov=lerp(cam.fov,f,Math.min(1,dt*4));cam.updateProjectionMatrix()}}
 function rainUpd(dt,ra){const cnt=Math.floor(Q[S.q].rain*clamp(ra,0,1));rain.visible=cnt>10&&tunF<.5;if(!rain.visible)return;rain.material.opacity=clamp(ra*.5,0,.65);
 const fs=S.map==='snow'?7:38,sk=S.map==='snow'?.12:.8;rain.material.color.setHex(S.map==='snow'?0xffffff:0xaec6e0);const cx_=cam.position.x,cy=cam.position.y,cz=cam.position.z,wm=(a,c,m)=>c+(((a-c)%m)+m*1.5)%m-m/2;
 for(let i=0;i<cnt;i++){const j=i*3;rd[j+1]-=fs*dt;rd[j]=wm(rd[j],cx_,40);rd[j+2]=wm(rd[j+2],cz,40);rd[j+1]=cy-6+(((rd[j+1]-(cy-6))%26)+26)%26;
@@ -1040,7 +1040,7 @@ try{const w=document.createElement('div');w.id='mpw';w.innerHTML='<div class="mh
  const vid=document.createElement('div');vid.id='mpvid';document.body.appendChild(vid);const ov=document.createElement('div');ov.id='mpov';ov.title='Click for full screen';document.body.appendChild(ov);const fx=document.createElement('button');fx.id='mpfx';fx.textContent='\u2715 Exit full screen';document.body.appendChild(fx);document.body.appendChild(w);
  const b=document.createElement('button');b.id='mpb';b.innerHTML='&#9835;';b.title='Music (M)';document.body.appendChild(b);
  const kb=document.createElement('div');kb.id='mpk';kb.tabIndex=0;kb.title='Volume: drag, mouse wheel, [ ] keys. Click to mute';kb.innerHTML='<i></i><span></span>';document.body.appendChild(kb);
- let MS={u:'',vol:70,mute:false,sz:'m',px:'l',py:'m'},on=false,open=false,rectNow=null,ytP=null,ytLoad=0,ytTimer=0,seeking=false,playing=false,fs=false;try{MS={...MS,...JSON.parse(localStorage.getItem('ed_media')||'{}')}}catch(e){}
+ let MS={u:'',vol:70,mute:false,sz:'s',px:'l',py:'l'},on=false,open=false,rectNow=null,ytP=null,ytLoad=0,ytTimer=0,seeking=false,playing=false,fs=false;try{MS={...MS,...JSON.parse(localStorage.getItem('ed_media')||'{}')}}catch(e){}if(MS.v!==3){MS.v=3;MS.sz='s';MS.px='l';MS.py='l'}
  const sv=()=>{try{localStorage.setItem('ed_media',JSON.stringify(MS))}catch(e){}},fmt=t=>{t=Math.max(0,Math.floor(t||0));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
  const status=h=>{$('mpe').innerHTML=h||''},openY=u=>'<br><button onclick="window.open(\''+u+'\',\'_blank\')">Open in YouTube</button>';
  function layPanel(){const s=w.style;s.display='block';const hh=w.offsetHeight||300,vh=innerHeight,t=Math.round(vh*.42)+104;s.top=Math.max(8,Math.min(t,vh-hh-8))+'px';s.display=''}
