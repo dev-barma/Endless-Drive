@@ -310,6 +310,59 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
  #gw.bike{width:76px!important;height:76px!important}
  #dash{bottom:calc(env(safe-area-inset-bottom,0px) + 134px)!important}
 }
+
+/* ===== Compact HUD v3: smallest ===== */
+#gw.car{width:130px!important;height:67px!important}
+#gw.bike{width:70px!important;height:70px!important}
+#dash{padding:1px 6px 3px!important;border-radius:12px!important}
+#scr{font-size:9px!important}
+#nbr{margin:2px 8px 1px!important}
+@media (max-height:520px){
+ #gw.car{width:96px!important;height:50px!important}
+ #gw.bike{width:56px!important;height:56px!important}
+ #dash{padding:1px 5px 2px!important}
+ #scr{font-size:7px!important}
+}
+@media (orientation:portrait){
+ #gw.car{width:104px!important;height:54px!important}
+ #gw.bike{width:60px!important;height:60px!important}
+ #dash{bottom:calc(env(safe-area-inset-bottom,0px) + 130px)!important}
+}
+
+/* ===== Player profile ===== */
+.pf7{display:flex;flex-direction:column;align-items:stretch;text-align:center}
+.pf7>*{animation:pfin .7s cubic-bezier(.2,.8,.2,1) backwards}
+.pf7>:nth-child(1){animation-delay:.05s}.pf7>:nth-child(2){animation-delay:.12s}.pf7>:nth-child(3){animation-delay:.2s}.pf7>:nth-child(4){animation-delay:.28s}.pf7>:nth-child(5){animation-delay:.34s}.pf7>:nth-child(6){animation-delay:.4s}.pf7>:nth-child(7){animation-delay:.46s}.pf7>:nth-child(8){animation-delay:.52s}.pf7>:nth-child(9){animation-delay:.58s}
+@keyframes pfin{from{opacity:0;transform:translateY(16px);filter:blur(5px)}}
+.pfi{position:relative;width:76px;height:76px;margin:0 auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#ffb347;background:radial-gradient(circle at 35% 30%,rgba(255,179,71,.22),rgba(255,255,255,.04));box-shadow:0 10px 26px rgba(0,0,0,.45)}
+.pfi::before{content:"";position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 55%,#ffb347,#ff7a3d,transparent 95%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1.5px));animation:pfspin 4.5s linear infinite}
+@keyframes pfspin{to{transform:rotate(360deg)}}
+.pfi svg{width:36px;height:36px}
+#pft{margin:6px 0 4px}
+.pfl{position:relative;display:block;margin:14px 0 0}
+.pfl input{width:100%;box-sizing:border-box;padding:20px 14px 8px;font:600 16px system-ui,-apple-system,sans-serif;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;outline:none;user-select:text;-webkit-user-select:text;transition:border-color .2s,box-shadow .2s,background .2s}
+.pfl span{position:absolute;left:15px;top:14px;font-size:14px;opacity:.6;pointer-events:none;transition:all .18s ease}
+.pfl input:focus,.pfl input:not(:placeholder-shown){}
+.pfl input:focus+span,.pfl input:not(:placeholder-shown)+span{top:6px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;color:var(--ac)}
+.pfl input:focus{border-color:var(--ac);background:rgba(255,179,71,.08);box-shadow:0 0 0 3px rgba(255,179,71,.18)}
+.pfl.bad input{border-color:#ff5f6d;box-shadow:0 0 0 3px rgba(255,95,109,.18)}
+.pfl.bad{animation:pfshake .4s}
+@keyframes pfshake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.pfe{min-height:16px;margin:4px 2px 0;font-size:12px;color:#ff8a94;text-align:left}
+#pfgo{position:relative;overflow:hidden;margin-top:12px}
+#pfgo::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-18deg);animation:pfsw 3s ease-in-out 1s infinite}
+@keyframes pfsw{to{left:140%}}
+@media (prefers-reduced-motion:reduce){.pf7>*,.pfi::before,#pfgo::after{animation:none!important}}
+
+/* ===== Race list: right side, under the minimap ===== */
+#rhud{left:auto!important;right:10px!important;top:calc(env(safe-area-inset-top,0px) + 126px)!important}
+@media (max-height:520px){
+ #rhud{top:calc(env(safe-area-inset-top,0px) + 100px)!important}
+ body.racing .tside:not(.tsl){right:150px!important}
+}
+@media (orientation:portrait){
+ #rhud{top:calc(env(safe-area-inset-top,0px) + 100px)!important}
+}
 </style></head><body>
 <div id="c"></div><div id="vg"></div><div id="sp2"></div><div id="gl"></div><div id="bl"></div><div id="fade" style="position:fixed;inset:0;background:#000;opacity:0;pointer-events:none"></div>
 <div id="hud"><div id="rcd"></div><div id="rhud"></div><div id="top"><div id="wcw"><div id="wc"></div><span id="wcl"></span></div><span id="tm" style="display:none"></span><span id="wx"></span><span id="fps"></span><span id="cm"></span><button id="pb" class="t">Menu</button></div>
@@ -322,8 +375,12 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(
 <div id="menu"><div class="p" id="main"><h1 id="ttl">Endless Drive</h1>
 <div id="mbt"><button id="go">Start Driving</button><button id="gm"></button><button id="mp"></button><button id="vh" style="display:none"></button><button id="rs" style="display:none">Restart</button><button id="hsb">High Scores</button><button id="gr2">Garage</button><button id="hp">Help</button><button id="st">Settings</button><button id="ab">About</button></div>
 <p id="mh" style="display:none"></p></div>
-<div class="p" id="hsp" style="display:none"><h1>High Scores</h1><div id="hsl"></div><button id="hsc">Clear scores</button><button id="hsk">Back</button></div><div class="p" id="mpp" style="display:none"><h1>Map</h1><div id="mpl"></div><button id="mpbk">Back</button></div><div class="p" id="gmp" style="display:none"><h1>Game Mode</h1><div id="gml"></div><button id="gmb">Back</button></div><div class="p" id="set" style="display:none"><h1>Settings</h1><div id="sl"></div><button id="fs">Fullscreen</button><button id="rst">Reset to defaults</button><button id="sb">Back</button></div>
+<div class="p" id="hsp" style="display:none"><h1>High Scores</h1><div id="hsl"></div><button id="hsc">Clear scores</button><button id="hsk">Back</button></div><div class="p" id="mpp" style="display:none"><h1>Map</h1><div id="mpl"></div><button id="mpbk">Back</button></div><div class="p" id="gmp" style="display:none"><h1>Game Mode</h1><div id="gml"></div><button id="gmb">Back</button></div><div class="p" id="set" style="display:none"><h1>Settings</h1><div id="sl"></div><button id="pfe">Player profile</button><button id="fs">Fullscreen</button><button id="rst">Reset to defaults</button><button id="sb">Back</button></div>
 <div class="p" id="garage" style="display:none"><h1>Garage</h1><button id="gvh"></button><div id="gb"></div><button id="gd">Done</button></div>
+<div class="p" id="prof" style="display:none"><div class="pf7"><div class="pfi"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c1.2-3.6 4.2-5.4 8-5.4s6.8 1.8 8 5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><h1 id="pft">Welcome, Driver</h1><p class="sub" id="pfs">Tell us who is behind the wheel. You only need to do this once.</p>
+<label class="pfl" id="pfn"><input id="pfni" type="text" maxlength="16" autocomplete="off" spellcheck="false" placeholder=" "><span>Your name</span></label><div class="pfe" id="pfne"></div>
+<label class="pfl" id="pfa"><input id="pfai" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder=" "><span>Your age</span></label><div class="pfe" id="pfae"></div>
+<button id="pfgo">Continue</button><button id="pfcx" style="display:none">Cancel</button></div></div>
 <div class="p" id="welcome" style="display:none"><h1>Welcome</h1><p class="sub">Learn the controls in a quick tutorial, or jump straight in.</p><button id="wt">Start Tutorial</button><button id="ws">Skip</button></div>
 <div class="p" id="help" style="display:none"><h1>Controls</h1><div class="kg">
 <span>Accelerate</span><b>W / &uarr;</b><span>Brake / reverse</span><b>S / &darr;</b><span>Steer</span><b>A D / &larr; &rarr;</b><span>Nitro</span><b>Shift / N</b><span>Horn</span><b>H</b>
@@ -345,7 +402,7 @@ window.__splashSnd=play;play();['pointerdown','keydown','touchstart'].forEach(fu
 (()=>{
 const TOUCH=('ontouchstart' in window)||navigator.maxTouchPoints>0;
 const $=id=>document.getElementById(id),clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),lerp=(a,b,t)=>a+(b-a)*t;
-const DEF={trans:'auto',runs:[],hbs:0,hbk:0,rrs:0,rrd:0,rrc:0,tut:0,cveh:'car',cjacket:'#e53935',chelmet:'#f2f2f2',cpants:'#1d2a44',map:'valley',ccolor:'#d32f2f',cstyle:'sedan',cfin:'gloss',cwheel:'#c9ced6',ctint:'#2c4258',wdur:3,gm:'endlessx',rl:5000,q:'medium',res:1,fps:60,view:600,traffic:.5,wInt:1,fov:70,sens:1,vol:.6,dayspd:1,units:'kmh',weather:'auto',coll:true,dmg:true,fuel:false,mouse:false,touch:false,music:false};
+const DEF={pname:'',page:0,trans:'auto',runs:[],hbs:0,hbk:0,rrs:0,rrd:0,rrc:0,tut:0,cveh:'car',cjacket:'#e53935',chelmet:'#f2f2f2',cpants:'#1d2a44',map:'valley',ccolor:'#d32f2f',cstyle:'sedan',cfin:'gloss',cwheel:'#c9ced6',ctint:'#2c4258',wdur:3,gm:'endlessx',rl:5000,q:'medium',res:1,fps:60,view:600,traffic:.5,wInt:1,fov:70,sens:1,vol:.6,dayspd:1,units:'kmh',weather:'auto',coll:true,dmg:true,fuel:false,mouse:false,touch:false,music:false};
 let FIRST=true;try{FIRST=!localStorage.getItem('ed_s')}catch(e){}let S={...DEF};try{S={...DEF,...JSON.parse(localStorage.getItem('ed_s')||'{}')}}catch(e){}
 if(S.gm==='life')S.gm='regular';if(S.gm==='free')S.gm='endlessx';if(S.dv!==2){S.dv=2;S.gm='endlessx';S.trans='auto'}if(S.map==='forest'||S.map==='bd')S.map='valley';
 if(TOUCH&&FIRST){S.q='low';S.res=.75;S.view=450;S.touch=true}
@@ -1192,12 +1249,12 @@ c.yw+=((c.vu?clamp(Math.atan2(c.vu,c.sp),-.15,.15):0)-c.yw)*Math.min(1,dt*6)}
 
 function softBump(o,dd,k){k=k||1;const sg=u>=o.u?1:-1;lv+=sg*2.2*k;shake=Math.max(shake,.4*k);if(dd>0){v=Math.max(o.dir<0?v*(1-.1*k):Math.min(v,o.sp),v*(1-.07*k))}else v+=1.2;o.yw=(o.yw||0)-sg*.07*k}
 function hsl2hex(h,s,l){const a=s*Math.min(l,1-l),f=n=>{const k=(n+h*12)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return (Math.round(f(0)*255)<<16)|(Math.round(f(8)*255)<<8)|Math.round(f(4)*255)}
-const RNM=['Rakib','Sajid','Tuhin','Nayeem','Imran','Farhan','Shuvo','Arif','Jubayer','Mehedi','Rony','Sohel','Taskin','Zahid','Anik'],RL=[-5.25,-1.75,1.75,5.25];
+const NMP=['Rakib','Sajid','Tuhin','Nayeem','Imran','Farhan','Shuvo','Arif','Jubayer','Mehedi','Rony','Sohel','Taskin','Zahid','Anik','Rafi','Sabbir','Tanvir','Hasan','Mahin','Nahid','Fahim','Siam','Rifat','Sakib','Tamim','Mushfiq','Nabil','Raihan','Asif','Kawsar','Mamun','Shanto','Jisan','Rubel','Ayon','Emon','Sadman','Zihad','Parvez','Rasel','Tonmoy','Abir','Nirob','Sourav','Dipto','Habib','Ovi','Titas','Munna'],RNM=['Rakib','Sajid','Tuhin','Nayeem','Imran','Farhan','Shuvo','Arif','Jubayer','Mehedi','Rony','Sohel','Taskin','Zahid','Anik'],RL=[-5.25,-1.75,1.75,5.25];
 function raceBuild(){const bike=S.cveh==='bike';rac.forEach(r=>scene.remove(r.m));rac.length=0;
 for(let i=0;i<15;i++){const col=hsl2hex(i/15,.8,.5),y=bike?TY[4]:TY[i%3===0?1:0],m=bike?mkBike(col,{jacket:col,helmet:CC[i%7]}):mkCar(y[0],y[1],y[2],col,y[3]);m.rotation.order='YXZ';scene.add(m);rac.push({m,w:y[0],l:y[1],n:RNM[i],col:'#'+('000000'+col.toString(16)).slice(-6),hit:0,dir:1,sk:0})}RACE.bk=bike}
 function raceInit(){const bike=S.cveh==='bike';if(RACE.bk!==bike||!rac.length)raceBuild();
 RACE.init=true;RACE.cd=3.6;RACE.t=0;RACE.fin=[];RACE.done=false;RACE.len=1e9;RACE.tl=600;RACE.pos=16;RACE.ht=0;RACE.goT=0;
-const sk=[...Array(15).keys()].sort(()=>Math.random()-.5);rac.forEach((r,i)=>{r.sk=sk[i]/14;r.top=57+r.sk*16+(Math.random()*2-1);r.ft=undefined;r.sp=0;r.hit=0;r.yw=0;r.vu=0;r.cd=1+Math.random()*2});
+{const pool=NMP.filter(x=>x.toLowerCase()!==(S.pname||'').toLowerCase()).sort(()=>Math.random()-.5);rac.forEach((r,i)=>r.n=pool[i])}const sk=[...Array(15).keys()].sort(()=>Math.random()-.5);rac.forEach((r,i)=>{r.sk=sk[i]/14;r.top=57+r.sk*16+(Math.random()*2-1);r.ft=undefined;r.sp=0;r.hit=0;r.yw=0;r.vu=0;r.cd=1+Math.random()*2});
 const slots=[];for(let q=0;q<16;q++)if(q!==13)slots.push(q);
 rac.slice().sort((a,b)=>b.sk-a.sk).forEach((r,j)=>{const q=slots[j];r.d=(3-(q>>2))*12;r.u=RL[q&3];r.tu=r.u;r.m.visible=true});
 const rc=$('rcd');rc.style.display='block';rcSet('3');$('rhud').style.display='block';toast('রেস শুরু হচ্ছে — আপনি সবার পেছনে!')}
@@ -1205,10 +1262,11 @@ function rcSet(t){const rc=$('rcd');if(rc.textContent===t)return;rc.textContent=
 function raceHead(){return RACE.pos===1?'আপনি জিতেছেন!':'রেস শেষ — '+RACE.pos+' নম্বর'}
 function raceText(){const l=RACE.ord;return '১০ মিনিটের রেস শেষ। আপনার স্থান: '+RACE.pos+'/16। আপনি '+(d/1000).toFixed(2)+' কিমি গেছেন। প্রথম তিনজন: '+l.slice(0,3).join(', ')+'।'+' স্কোর: '+score+(recordRun()?' — নতুন সর্বোচ্চ স্কোর!':'।')}
 function raceHud(dt){RACE.ht-=dt;if(RACE.ht>0)return;RACE.ht=.2;
-const L=rac.map(r=>({n:r.n,d:r.d,col:r.col}));L.push({n:'You',d:d,col:'#fff',me:1});
+const L=rac.map(r=>({n:r.n,d:r.d,col:r.col}));L.push({n:S.pname||'You',d:d,col:'#fff',me:1});
 L.sort((a,b)=>b.d-a.d);const mi=L.findIndex(x=>x.me),st=Math.max(0,Math.min(mi-3,9)),t=RACE.t;
 $('rhud').innerHTML='<div class="rh"><b>P '+(mi+1)+'</b>/16 &nbsp; '+(Math.max(d,0)/1000).toFixed(2)+' km</div><div class="rpb"><i style="width:'+clamp(t/RACE.tl*100,0,100)+'%"></i></div><div class="rh">Time left '+Math.floor(Math.max(0,RACE.tl-t)/60)+':'+('0'+Math.floor(Math.max(0,RACE.tl-t)%60)).slice(-2)+'</div>'+L.slice(st,st+7).map((x,i)=>'<div class="rr'+(x.me?' me':'')+'"><b>'+(st+i+1)+'</b><i style="background:'+x.col+'"></i>'+x.n+'<span>'+(x.me?'':((x.d-d>=0?'+':'-')+Math.abs(Math.round(x.d-d))+' m'))+'</span></div>').join('')}
 function raceUpd(dt){
+document.body.classList.toggle('racing',S.gm==='race');
 if(S.gm!=='race'){if(RACE.on){rac.forEach(r=>r.m.visible=false);$('rhud').style.display='none';$('rcd').style.display='none'}RACE.on=false;return}
 if(!RACE.init)raceInit();RACE.on=true;const rc=$('rcd'),go=RACE.cd<=0;
 if(!go){RACE.cd-=dt;const k=RACE.cd;rcSet(k>2.6?'3':k>1.6?'2':'1');if(RACE.cd<=0){RACE.goT=.9;rcSet('GO!');toast('যাও যাও যাও!')}}
@@ -1268,7 +1326,7 @@ cars.forEach(c=>{const ud=c.m.userData.ind;if(!ud)return;const act=c.on&&(c.sg>0
 audioUpd(ev.ra,rpmS,Math.abs(u)>7.2);hudT+=dt;if(hudT>.1){hudT=0;hud(ev.dayF,gearV,rpmS);mini()}
 R.autoClear=true;R.render(scene,cam);cockRender()}
 // UI
-function show(p){gar=p==='garage';if($('edb'))$('edb').style.display=rrOn?'block':'none';$('menu').className=gar?'g':'';$('menu').style.display=p?'flex':'none';['main','set','hsp','mpp','gmp','about','garage','welcome','help','dead'].forEach(x=>$(x).style.display=x===p?'block':'none')}
+function show(p){gar=p==='garage';if($('edb'))$('edb').style.display=rrOn?'block':'none';$('menu').className=gar?'g':'';$('menu').style.display=p?'flex':'none';['main','set','hsp','mpp','gmp','about','garage','welcome','help','dead','prof'].forEach(x=>$(x).style.display=x===p?'block':'none')}
 let rotShown=false;function rotHint(){if(!TOUCH||rotShown||innerHeight<innerWidth)return;rotShown=true;const e=$('rot');e.style.display='flex';const h=()=>{e.style.display='none'};$('rotx').onclick=h;setTimeout(h,7000);addEventListener('resize',()=>{if(innerWidth>innerHeight)h()})}
 function resume(){started=true;rotHint();paused=false;show(null);initAudio();if(A)A.c.resume();$('go').textContent='Resume';$('rs').style.display='block'}
 function pause(){paused=true;$('go').style.display='block';show('main')}
@@ -1309,7 +1367,16 @@ if(rrOn){if(e.code==='KeyQ')rrAttack(-1);if(e.code==='KeyE')rrAttack(1);if(e.cod
 if(e.code==='BracketLeft'||e.code==='BracketRight'){S.fov=clamp(S.fov+(e.code==='BracketRight'?5:-5),50,110);save();buildSet()}});
 addEventListener('keyup',e=>{K[e.code]=false;if(e.code==='KeyH')hornOn(false)});
 try{const dsc=Object.getOwnPropertyDescriptor(Node.prototype,'textContent');['wx','cm','scr'].forEach(i=>{const e=$(i);let cur='';Object.defineProperty(e,'textContent',{configurable:true,get(){return cur},set(t){t=String(t);if(t!==cur){const had=cur!=='';cur=t;dsc.set.call(e,t);if(had&&i!=='tm'){e.classList.remove(i==='scr'?'pop':'tk');void e.offsetWidth;e.classList.add(i==='scr'?'pop':'tk')}else if(had){e.classList.remove('tk');void e.offsetWidth;e.classList.add('tk')}}}})})}catch(e){}
-wcBuild();setGm();setVeh();buildGarage();buildSet();applyGfx();touch();if(TOUCH){document.body.classList.add('touch');$('mh').textContent='Use the on-screen buttons to drive. Open Help for more.'}rebuild();setMap();show(S.tut?'main':'welcome');requestAnimationFrame(loop);setTimeout(()=>{$('load').style.opacity=0;setTimeout(()=>$('load').remove(),700)},Math.max(300,2400-performance.now()));
+wcBuild();setGm();setVeh();buildGarage();buildSet();applyGfx();touch();if(TOUCH){document.body.classList.add('touch');$('mh').textContent='Use the on-screen buttons to drive. Open Help for more.'}rebuild();let profBack='main';
+function profOpen(back,first){profBack=back;$('pfni').value=S.pname||'';$('pfai').value=S.page||'';$('pfne').textContent=$('pfae').textContent='';$('pfn').classList.remove('bad');$('pfa').classList.remove('bad');$('pft').textContent=first?'Welcome, Driver':'Player profile';$('pfs').textContent=first?'Tell us who is behind the wheel. You only need to do this once.':'Update your name or age.';$('pfgo').textContent=first?'Continue':'Save';$('pfcx').style.display=first?'none':'block';show('prof');setTimeout(()=>{try{$('pfni').focus()}catch(e){}},450)}
+function profBad(id,eid,msg){const l=$(id);l.classList.remove('bad');void l.offsetWidth;l.classList.add('bad');$(eid).textContent=msg}
+function profSave(){const n=$('pfni').value.replace(/\s+/g,' ').trim(),a=parseInt($('pfai').value,10);let ok=true;$('pfne').textContent=$('pfae').textContent='';$('pfn').classList.remove('bad');$('pfa').classList.remove('bad');
+ if(n.length<2){profBad('pfn','pfne','Please enter your name (at least 2 letters).');ok=false}
+ if(!(a>=5&&a<=99)){profBad('pfa','pfae','Please enter a valid age (5 to 99).');ok=false}
+ if(!ok)return;S.pname=n;S.page=a;save();try{if(RACE.init)RACE.init=false}catch(e){}toast('Welcome, '+n+'!');show(profBack==='first'?(S.tut?'main':'welcome'):profBack)}
+$('pfgo').onclick=profSave;$('pfcx').onclick=()=>show(profBack);$('pfe').onclick=()=>profOpen('set',false);
+['pfni','pfai'].forEach(i=>$(i).addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')profSave()}));$('pfai').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'')});
+setMap();if(S.pname)show(S.tut?'main':'welcome');else show(null);requestAnimationFrame(loop);setTimeout(()=>{$('load').style.opacity=0;if(!S.pname)setTimeout(()=>profOpen('first',true),350);setTimeout(()=>$('load').remove(),700)},Math.max(300,2400-performance.now()));
 // ===== Media player (YouTube links, MP3-player style; video shows only on the car dashboard monitor) =====
 try{const w=document.createElement('div');w.id='mpw';w.innerHTML='<div class="mh"><b>MUSIC PLAYER</b><button id="mpc">&#10005;</button></div><div class="mi"><input type="text" id="mpi" placeholder="Paste YouTube or music link" autocomplete="off" spellcheck="false"><button id="mpp">Paste</button><button id="mpg">Play</button></div><div class="np"><div class="disc"></div><div style="min-width:0;flex:1"><div id="mpt">Nothing playing</div><div id="mpe"></div></div></div><input type="range" id="mpr" min="0" max="1000" value="0"><div class="tm"><span id="mpa">0:00</span><span id="mpz">0:00</span></div><div class="tr"><button id="mpV">&#9198;</button><button id="mpP" class="big">&#9654;</button><button id="mpN">&#9197;</button><button id="mpS">&#9632;</button><button id="mpF" title="Full screen (F)">&#9974;</button></div><div class="vl"><span>&#128266;</span><input type="range" id="mpo" min="0" max="100" value="70"></div><div class="sr"><span>Screen</span><button data-k="sz" data-v="s">S</button><button data-k="sz" data-v="m">M</button><button data-k="sz" data-v="l">L</button><span>Place</span><button data-k="px" data-v="l">&#9664;</button><button data-k="px" data-v="c">&#9679;</button><button data-k="px" data-v="r">&#9654;</button><button data-k="py" data-v="h">&#9650;</button><button data-k="py" data-v="m">&#9632;</button><button data-k="py" data-v="l">&#9660;</button></div>';
  const vid=document.createElement('div');vid.id='mpvid';document.body.appendChild(vid);const ov=document.createElement('div');ov.id='mpov';ov.title='Click for full screen';document.body.appendChild(ov);const fx=document.createElement('button');fx.id='mpfx';fx.textContent='\u2715 Exit full screen';document.body.appendChild(fx);document.body.appendChild(w);
